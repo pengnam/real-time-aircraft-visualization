@@ -1,10 +1,10 @@
 import socket
 import json
 
+
 HOST = 'pub-vrs.adsbexchange.com'
 PORT = 32005
 #Website: https://www.adsbexchange.com/data/
-
 class StreamSocket:
     def __init__(self, host, port):
         self.host = host
@@ -19,6 +19,8 @@ class AircraftStream(StreamSocket):
     """
         Note: Strong assumptions about the format of the return data
     """
+    def __init__(self):
+        super().__init__(host=HOST, port=PORT)
     def stream_data(self):
         data = b''
         while True:
@@ -60,9 +62,6 @@ class AircraftStream(StreamSocket):
     def process_aircraft(self, aircraft_data):
         print(json.loads(aircraft_data))
 
-k = AircraftStream(HOST,PORT)
-k.connect()
-k.stream_data()
 
 
 
