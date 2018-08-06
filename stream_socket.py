@@ -23,43 +23,42 @@ class AircraftStream(StreamSocket):
         data = b''
         while True:
             data = data + self.client.recv(4096)
-            data, vals = self.stream_parser(data)
-            yield vals
-            self.segment_parser(vals)
+            data = self.stream_parser(data)
+            data = self.segment_parser(data)
 
 
     def stream_parser(self, response_segment):
         """
             Removes excess segments from stream_segment before calling a segment parser
+            Strips:
+                1) {"aclist":[
+                2)]}
+            Returns bytes of aircrafts separated by a ','. Note that there might be trailing excess bytes
         """
-        previous_val = None
-        #Remove append
-        try:
-            previous_val, response_segment = response_segment.split(b']}')
-        except ValueError as e:
-            pass
-        #Remove prepend
-        try:
-            _, response_segment = response_segment.split(b'{"acList":[')
-        except ValueError as e:
-            pass
+        response_segment = response_segment.replace(b']}', b',')
+        response_segment = response_segment.replace(b'{"acList":[', b'')
+        return response_segment
 
-        if previous_val:
-            return previous_val,response_segment
-        else:
-            return None, response_segment
     def segment_parser(self, segment):
         """
-            Parses segments separated by commas
+            Parses segments into sections
+            Returns generator object
         """
 
-        aircraft_datas = segment.split(b',')
+        try:
+            while True:
+                start_index = segment.index(b'{')
+                split_index = segment.index(b'},{')
+                print(start_index, split_index)
+                aircraft_data = segment[start_index:split_index+1]
+                self.process_aircraft(aircraft_data)
+                segment = segment[split_index+2:]
+        except ValueError as e:
+            print("end")
+            return segment
 
-        self.process_aircraft(aircraft_datas)
-    def process_aircraft(self, aircraft_datas):
-        for aircraft_data in aircraft_datas:
-            print(aircraft_data)
-            print(json.loads(aircraft_data))
+    def process_aircraft(self, aircraft_data):
+        print(json.loads(aircraft_data))
 
 k = AircraftStream(HOST,PORT)
 k.connect()
