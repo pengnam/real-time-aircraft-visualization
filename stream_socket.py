@@ -2,7 +2,8 @@ import socket
 import json
 
 HOST = 'pub-vrs.adsbexchange.com'
-PORT = 32030
+PORT = 32005
+#Website: https://www.adsbexchange.com/data/
 
 class StreamSocket:
     def __init__(self, host, port):
