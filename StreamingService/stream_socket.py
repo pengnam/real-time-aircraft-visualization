@@ -1,5 +1,6 @@
 import socket
 import json
+from pipeline import DataPipeline
 
 
 HOST = 'pub-vrs.adsbexchange.com'
@@ -20,6 +21,7 @@ class AircraftStream(StreamSocket):
         Note: Strong assumptions about the format of the return data
     """
     def __init__(self):
+        self.pipeline = DataPipeline("aircraft", "aircraft.avsc")
         super().__init__(host=HOST, port=PORT)
     def stream_data(self):
         data = b''
