@@ -1,6 +1,6 @@
 import socket
 import json
-from pipeline import DataPipeline
+from pipeline import DataPipelineProducer
 
 
 HOST = 'pub-vrs.adsbexchange.com'
@@ -21,7 +21,7 @@ class AircraftStream(StreamSocket):
         Note: Strong assumptions about the format of the return data
     """
     def __init__(self):
-        self.pipeline = DataPipeline("aircraft", "aircraft.avsc")
+        self.pipeline = DataPipelineProducer("aircraft", "aircraft.avsc")
         super().__init__(host=HOST, port=PORT)
     def stream_data(self):
         data = b''
@@ -53,17 +53,14 @@ class AircraftStream(StreamSocket):
             while True:
                 start_index = segment.index(b'{')
                 split_index = segment.index(b'},{')
-                print(start_index, split_index)
                 aircraft_data = segment[start_index:split_index+1]
                 self.process_aircraft(aircraft_data)
                 segment = segment[split_index+2:]
         except ValueError as e:
-            print("end")
             return segment
 
     def process_aircraft(self, aircraft_data):
         data = json.loads(aircraft_data)
-        store_data = {}
         self.pipeline.write(data)
 
 
