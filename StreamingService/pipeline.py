@@ -44,8 +44,13 @@ class DataPipelineConsumer(DataPipeline):
     def read(self):
         self.consumer.subscribe([self.topic])
         while True:
-            for message in self.consumer:
-                print(message)
+            for msg in self.consumer:
+                bytes_reader = io.BytesIO(msg.value)
+                decoder=avro.io.BinaryDecoder(bytes_reader)
+                reader  = DatumReader(self.schema)
+                value = reader.read(decoder)
+                print(value)
+
 
 
 if __name__ == "__main__":
