@@ -62,7 +62,9 @@ class AircraftStream(StreamSocket):
             return segment
 
     def process_aircraft(self, aircraft_data):
-        print(json.loads(aircraft_data))
+        data = json.loads(aircraft_data)
+        store_data = {}
+        self.pipeline.write(data)
 
 
 
