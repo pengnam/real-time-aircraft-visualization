@@ -1,4 +1,4 @@
-from kafka import KafkaProducer, KafkaClient
+from kafka import KafkaProducer, KafkaConsumer
 import avro.schema
 import io
 from avro.io import DatumWriter
@@ -13,7 +13,7 @@ class DataPipeline:
 
 class DataPipelineProducer(DataPipeline):
     def __init__(self, host='localhost:9092', *args, **kwargs):
-        self.producer = self.KafkaProducer(boostrap_server=host)
+        self.producer = KafkaProducer(bootstrap_servers=host)
         super().__init__(*args, **kwargs)
 
     def write(self, data):
@@ -38,7 +38,7 @@ class DataPipelineProducer(DataPipeline):
 
 class DataPipelineConsumer(DataPipeline):
     def __init__(self, host='localhost:9092', *args, **kwargs):
-        self.consumer= self.KafkaConsumer(auto_offset_reset='earliest', consumer_timeout_ms=1000, boostrap_server=host)
+        self.consumer= KafkaConsumer(auto_offset_reset='earliest', consumer_timeout_ms=1000, bootstrap_servers=host)
         super().__init__(*args, **kwargs)
 
     def read(self):
@@ -47,4 +47,10 @@ class DataPipelineConsumer(DataPipeline):
             for message in self.consumer:
                 print(message)
 
+
+if __name__ == "__main__":
+    print("INSIDE")
+
+    cons = DataPipelineConsumer("aircraft", "aircraft.avsc")
+    cons.read()
 
