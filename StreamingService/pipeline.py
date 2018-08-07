@@ -33,5 +33,18 @@ class DataPipelineProducer(DataPipeline):
         writer.write(store_data, encoder)
         raw_bytes = bytes_writer.getvalue()
 
+        #Place into pipeline
+        self.producer.send(self.topic, raw_bytes)
+
+class DataPipelineConsumer(DataPipeline):
+    def __init__(self, host='localhost:9092', *args, **kwargs):
+        self.consumer= self.KafkaConsumer(auto_offset_reset='earliest', consumer_timeout_ms=1000, boostrap_server=host)
+        super().__init__(*args, **kwargs)
+
+    def read(self):
+        self.consumer.subscribe([self.topic])
+        while True:
+            for message in self.consumer:
+                print(message)
 
 
