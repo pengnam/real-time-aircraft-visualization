@@ -1,8 +1,8 @@
 from kafka import KafkaProducer, KafkaConsumer
 import avro.schema
 import io
-from avro.io import DatumWriter
-
+import avro.io
+from avro.io import DatumWriter, DatumReader
 
 class DataPipeline:
     def __init__(self, topic, schema_path):
@@ -12,7 +12,7 @@ class DataPipeline:
 
 
 class DataPipelineProducer(DataPipeline):
-    def __init__(self, host='localhost:9092', *args, **kwargs):
+    def __init__(self,  *args,host='localhost:9092', **kwargs):
         self.producer = KafkaProducer(bootstrap_servers=host)
         super().__init__(*args, **kwargs)
 
@@ -37,7 +37,7 @@ class DataPipelineProducer(DataPipeline):
         self.producer.send(self.topic, raw_bytes)
 
 class DataPipelineConsumer(DataPipeline):
-    def __init__(self, host='localhost:9092', *args, **kwargs):
+    def __init__(self, *args, host='localhost:9092', **kwargs):
         self.consumer= KafkaConsumer(auto_offset_reset='earliest', consumer_timeout_ms=1000, bootstrap_servers=host)
         super().__init__(*args, **kwargs)
 
