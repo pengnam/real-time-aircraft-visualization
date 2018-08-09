@@ -1,0 +1,10 @@
+{"namespace": "airplane.avro",
+  "type": "record",
+  "name": "Airplane",
+  "fields": [
+    {"name": "Icao", "type": "string"},
+    {"name": "Lat", "type": ["null", "float"], "default": "null"},
+    {"name": "Long", "type": ["null", "float"], "default": "null"},
+    {"name": "Gnd", "type": ["null", "boolean"], "default":"true"}
+  ]
+}
