@@ -1,10 +1,6 @@
-# Path hack.
-import sys, os
-sys.path.insert(0, os.path.abspath('..'))
-
 import socket
 import json
-from Base.pipeline import DataPipelineProducer
+from pipeline import DataPipelineProducer
 
 
 HOST = 'pub-vrs.adsbexchange.com'

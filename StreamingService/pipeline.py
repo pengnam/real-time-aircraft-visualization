@@ -34,11 +34,12 @@ class DataPipelineProducer(DataPipeline):
         raw_bytes = bytes_writer.getvalue()
 
         #Place into pipeline
+        print(data)
         self.producer.send(self.topic, raw_bytes)
 
 class DataPipelineConsumer(DataPipeline):
     def __init__(self, *args, host='localhost:9092', **kwargs):
-        self.consumer= KafkaConsumer(auto_offset_reset='earliest', consumer_timeout_ms=1000, bootstrap_servers=host)
+        self.consumer= KafkaConsumer(auto_offset_reset='latest', consumer_timeout_ms=1000, bootstrap_servers=host)
         super().__init__(*args, **kwargs)
 
     def read(self):
@@ -54,8 +55,9 @@ class DataPipelineConsumer(DataPipeline):
 
 
 if __name__ == "__main__":
+    """
     print("INSIDE")
 
     cons = DataPipelineConsumer("aircraft", "aircraft.avsc")
     cons.read()
-
+    """
