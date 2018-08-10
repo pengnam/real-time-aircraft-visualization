@@ -21,3 +21,28 @@ class SocketHandler(websocket.WebSocketHandler):
 
     def on_close(self):
         print("Socket closing")
+
+"""
+class ApiHandler(web.RequestHandler):
+
+    @web.asynchronous
+    def get(self, *args):
+        self.finish()
+        id = self.get_argument("id")
+        value = self.get_argument("value")
+        data = {"id": id, "value" : value}
+        data = json.dumps(data)
+
+    @web.asynchronous
+    def post(self):
+        pass
+"""
+app = web.Application([
+    (r'/', IndexHandler),
+    (r'/ws', SocketHandler),
+#    (r'/api', ApiHandler)
+])
+
+if __name__ == '__main__':
+    app.listen(8888)
+    ioloop.IOLoop.instance().start()
