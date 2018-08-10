@@ -1,3 +1,11 @@
+from tornado import websocket, web, ioloop
+from pipeline import DataPipelineConsumer
+import json
+
+
+class IndexHandler(web.RequestHandler):
+    def get(self):
+        self.render("index.html")
 
 class SocketHandler(websocket.WebSocketHandler):
     def check_origin(self, origin):
