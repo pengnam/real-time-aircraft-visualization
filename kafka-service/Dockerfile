@@ -5,8 +5,6 @@ ARG kafka_version=1.0.0
 ARG scala_version=2.11
 ARG glibc_version=2.27-r0
 
-MAINTAINER wurstmeister
-
 ENV KAFKA_VERSION=$kafka_version \
     SCALA_VERSION=$scala_version \
     KAFKA_HOME=/opt/kafka \
