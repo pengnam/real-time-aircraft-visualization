@@ -43,6 +43,16 @@ export default class App extends Component {
     this._getData();
   }
 
+  componentDidMount() {
+    this._processData();
+    window.addEventListener('resize', this._resize);
+    this._resize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._resize);
+  }
+
   _onHover({x, y, object}) {
     this.setState({x, y, hoveredObject: object});
   }
