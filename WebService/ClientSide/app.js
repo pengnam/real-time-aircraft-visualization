@@ -74,6 +74,32 @@ export default class App extends Component {
       console.log(points);
     }
   }
+  _getData() {
+    //START WEB SOCKET
+		console.log("INSIDE WEB SOCKET");
+    //var host = window.location.host;
+    var app = this;
+    var ws = new WebSocket('ws://localhost:8888/ws');
+    ws.onopen = function(){
+      console.log("SOCKET_OPEN");
+    };
+    ws.onmessage = function(ev){
+      var json = JSON.parse(ev.data);
+      MY_DATA.push(json);
+      console.log("PUSHING");
+
+      if (MY_DATA.length%1000 == 0){
+        console.log("Processing");
+        app._processData();
+      }
+    };
+    ws.onclose = function(ev){
+      console.log("SOCKET CLOSED");
+    };
+    ws.onerror = function(ev){
+    };
+    //END WEB SOCKET
+  }
   _onHover({x, y, object}) {
     this.setState({x, y, hoveredObject: object});
   }
