@@ -100,6 +100,14 @@ export default class App extends Component {
     };
     //END WEB SOCKET
   }
+	sleep(milliseconds) {
+		var start = new Date().getTime();
+		for (var i = 0; i < 1e7; i++) {
+			if ((new Date().getTime() - start) > milliseconds){
+				break;
+			}
+		}
+	}
   _onHover({x, y, object}) {
     this.setState({x, y, hoveredObject: object});
   }
