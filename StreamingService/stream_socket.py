@@ -61,6 +61,12 @@ class AircraftStream(StreamSocket):
 
     def process_aircraft(self, aircraft_data):
         data = json.loads(aircraft_data)
+        #HACK: to remove data without coordinates
+        if "Lat" in data:
+            if data["Lat"] == 0 or data["Lat"] == None:
+                return
+        else:
+            return
         self.pipeline.write(data)
 
 
