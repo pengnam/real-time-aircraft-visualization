@@ -1,14 +1,5 @@
 #!/bin/bash -e
-
-# Allow specific kafka versions to perform any unique bootstrap operations
-OVERRIDE_FILE="/opt/overrides/${KAFKA_VERSION}.sh"
-if [[ -x "$OVERRIDE_FILE" ]]; then
-    echo "Executing override file $OVERRIDE_FILE"
-    eval "$OVERRIDE_FILE"
-fi
-
-# Store original IFS config, so we can restore it at various stages
-ORIG_IFS=$IFS
+#ADAPTED wurstmeister's code
 
 if [[ -z "$KAFKA_ZOOKEEPER_CONNECT" ]]; then
     echo "ERROR: missing mandatory config: KAFKA_ZOOKEEPER_CONNECT"
@@ -19,8 +10,6 @@ if [[ -z "$KAFKA_PORT" ]]; then
     export KAFKA_PORT=9092
 fi
 
-create-topics.sh &
-unset KAFKA_CREATE_TOPICS
 
 if [[ -z "$KAFKA_ADVERTISED_PORT" && \
   -z "$KAFKA_LISTENERS" && \
@@ -80,7 +69,6 @@ if [[ -n "$RACK_COMMAND" && -z "$KAFKA_BROKER_RACK" ]]; then
     export KAFKA_BROKER_RACK
 fi
 
-# Try and configure minimal settings or exit with error if there isn't enough information
 if [[ -z "$KAFKA_ADVERTISED_HOST_NAME$KAFKA_LISTENERS" ]]; then
     if [[ -n "$KAFKA_ADVERTISED_LISTENERS" ]]; then
         echo "ERROR: Missing environment variable KAFKA_LISTENERS. Must be specified when using KAFKA_ADVERTISED_LISTENERS"

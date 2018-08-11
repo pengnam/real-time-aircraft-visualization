@@ -1,5 +1,5 @@
 #!/bin/sh -e
-
+#Adapted wurstmeister's code
 FILENAME="kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz"
 
 echo "Starting download of $FILENAME"

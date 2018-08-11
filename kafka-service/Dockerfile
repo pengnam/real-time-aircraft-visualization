@@ -1,3 +1,4 @@
+#Adapted wurstmeister's code
 FROM openjdk:8u171-jre-alpine
 
 ARG kafka_version=1.0.0
