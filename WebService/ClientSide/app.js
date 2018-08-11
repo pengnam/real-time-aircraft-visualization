@@ -53,6 +53,27 @@ export default class App extends Component {
     window.removeEventListener('resize', this._resize);
   }
 
+  _processData() {
+    if (MY_DATA) {
+      console.log(MY_DATA.length);
+      this.setState({status: 'LOADED'});
+      const points = MY_DATA.reduce((accu, curr) => {
+        accu.push({
+          position: [Number(curr.Long), Number(curr.Lat)],
+          grounded: true
+        });
+
+        return accu;
+      }, []);
+      console.log("POINTS:");
+      console.log(points);
+      this.setState({
+        points,
+        status: 'READY'
+      });
+      console.log(points);
+    }
+  }
   _onHover({x, y, object}) {
     this.setState({x, y, hoveredObject: object});
   }
