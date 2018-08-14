@@ -13,5 +13,9 @@ I needed practice with some others:
 2. Using Docker
 3. Programming in python/javascript
 
+The application streams data from https://public-api.adsbexchange.com/ . (Thank you ADS-B Exchange)
+The data gives a stream of aircraft positions updated every 5s. The application was able to handle the throughput of data.
 
 ![Alt text](screenshot.png)
+
+Picture: Visualization after about 30s of aircraft plotting
