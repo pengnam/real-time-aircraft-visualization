@@ -1,4 +1,4 @@
-# Real-time Aircraft Visualization
+# Gandalf
 ## Brief Description
 This application is solely composed of microservices: a kafka service, a streaming service, a web service and a client service.
 I really wanted to try the following ideas:
